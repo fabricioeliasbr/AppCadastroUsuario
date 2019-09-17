@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Preto"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:text="Cadastre-se para usar!"
+            android:textAlignment="center"
+            android:textColor="@color/Branco"
+            android:textSize="35dp" />
+
+        <TextView
+            android:id="@+id/textViewNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:text="Nome Completo"
+            android:textColor="@color/Branco"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/editTextNome"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_margin="7dp"
+            android:background="@drawable/edit_text_box" />
+
+        <TextView
+            android:id="@+id/textViewCPF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:text="E-mail"
+            android:textColor="@color/Branco"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/editTextCPF"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_margin="7dp"
+            android:background="@drawable/edit_text_box" />
+    </LinearLayout>
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewDados"
+        android:layout_below="@id/linearLayout">
+    </ListView>
+
+</LinearLayout>

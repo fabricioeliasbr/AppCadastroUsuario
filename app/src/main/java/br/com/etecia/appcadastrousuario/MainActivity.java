@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     List<User> userList;
 
     boolean isUpdating = false;
-
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

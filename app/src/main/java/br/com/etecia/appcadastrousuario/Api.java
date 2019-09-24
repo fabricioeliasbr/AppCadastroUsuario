@@ -6,8 +6,8 @@ public class Api {
 
     //Variáveis estáticas e globais para acesso os métodos no WEB Service
 
-    public static final String URL_CREATE_HERO = ROOT_URL + "createhero";
-    public static final String URL_READ_HEROES = ROOT_URL + "getheroes";
-    public static final String URL_UPDATE_HERO = ROOT_URL + "updatehero";
-    public static final String URL_DELETE_HERO = ROOT_URL + "deletehero&id=";
+    public static final String URL_CREATE_HERO = ROOT_URL + "createUser";
+    public static final String URL_READ_HEROES = ROOT_URL + "getUser";
+    public static final String URL_UPDATE_HERO = ROOT_URL + "updateUser";
+    public static final String URL_DELETE_HERO = ROOT_URL + "deleteUser&id=";
 }

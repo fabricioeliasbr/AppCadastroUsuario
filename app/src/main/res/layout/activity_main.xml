@@ -17,13 +17,20 @@
         android:padding="15dp">
 
         <TextView
+            android:id="@+id/textViewCadastre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="casual"
             android:text="Cadastre-se para usar!"
             android:textAlignment="center"
             android:textColor="@color/Branco"
-            android:textSize="35dp" />
+            android:textSize="45dp" />
+
+        <EditText
+            android:id="@+id/editTextUserId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textViewNome"
@@ -33,33 +40,45 @@
             android:layout_marginTop="30dp"
             android:text="Nome Completo"
             android:textColor="@color/Branco"
-            android:textSize="20dp" />
+            android:textSize="25dp" />
+
 
         <EditText
             android:id="@+id/editTextNome"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="30dp"
             android:layout_margin="7dp"
             android:background="@drawable/edit_text_box" />
 
         <TextView
-            android:id="@+id/textViewCPF"
+            android:id="@+id/textViewEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="30dp"
             android:text="E-mail"
             android:textColor="@color/Branco"
-            android:textSize="20dp" />
+            android:textSize="25dp" />
 
         <EditText
-            android:id="@+id/editTextCPF"
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="30dp"
             android:layout_margin="7dp"
             android:background="@drawable/edit_text_box" />
+
     </LinearLayout>
-    
+    <Button
+        android:id="@+id/buttonCadastra"
+        android:background="@color/Branco"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="Cadastrar"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp">
+    </Button>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

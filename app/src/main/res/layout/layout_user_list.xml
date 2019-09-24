@@ -4,7 +4,8 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewName"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/textViewNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -13,13 +14,14 @@
         android:textColor="@color/Preto"/>
 
     <TextView
-        android:id="@+id/textEmail"
+        android:textSize="20dp"
+        android:id="@+id/textViewApaga"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/textViewName"
-        android:text="Email_da_pessoa"
-        android:layout_marginLeft="60dp"
-        android:textSize="20dp"
-        android:textColor="@color/Preto"/>
+        android:layout_marginLeft="140dp"
+        android:layout_toRightOf="@+id/textViewNome"
+        android:text="Apagar"
+        android:textColor="@color/Vermelho"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

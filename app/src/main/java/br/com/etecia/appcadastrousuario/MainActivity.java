@@ -37,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextNome, editTextEmail, editTextUserId;
     TextView textViewCadastre, textViewNome, textViewEmail;
     Button buttonCadastra;
+    ListView listViewDados;
 
     List<User> userList;
 
     boolean isUpdating = false;
- 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,44 +106,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateHero() {
         String id = editTextUserId.getText().toString();
-        String name = editTextNome.getText().toString().trim();
+        String nome = editTextNome.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
 
-        int rating = (int) ratingBar.getRating();
-
-        String team = spinnerTeam.getSelectedItem().toString();
-
-
-        if (TextUtils.isEmpty(name)) {
-            editTextName.setError("Por favor entre com o nome");
-            editTextName.requestFocus();
+        if (TextUtils.isEmpty(nome)) {
+            editTextNome.setError("Por favor entre com o nome");
+            editTextNome.requestFocus();
             return;
         }
 
-        if (TextUtils.isEmpty(realname)) {
-            editTextRealname.setError("Por favor entre com o nome real");
-            editTextRealname.requestFocus();
+        if (TextUtils.isEmpty(email)) {
+            editTextEmail.setError("Por favor entre com um e-mail válido");
+            editTextEmail.requestFocus();
             return;
         }
 
         HashMap<String, String> params = new HashMap<>();
         params.put("id", id);
-        params.put("name", name);
-        params.put("realname", realname);
-        params.put("rating", String.valueOf(rating));
-        params.put("teamaffiliation", team);
+        params.put("nome", nome);
 
 
         PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_UPDATE_HERO, params, CODE_POST_REQUEST);
         request.execute();
 
-        buttonAddUpdate.setText("Alterado");
+        buttonCadastra.setText("Alterado");
 
-        editTextName.setText("");
-        editTextRealname.setText("");
-        ratingBar.setRating(0);
-        spinnerTeam.setSelection(0);
-
+        editTextNome.setText("");
+        editTextEmail.setText("");
         isUpdating = false;
     }
 
@@ -152,22 +142,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshHeroList(JSONArray heroes) throws JSONException {
-        heroList.clear();
+        userList.clear();
 
         for (int i = 0; i < heroes.length(); i++) {
             JSONObject obj = heroes.getJSONObject(i);
 
-            heroList.add(new Hero(
+            userList.add(new User(
                     obj.getInt("id"),
                     obj.getString("name"),
-                    obj.getString("realname"),
-                    obj.getInt("rating"),
-                    obj.getString("teamaffiliation")
+                    obj.getString("email")
             ));
         }
 
-        HeroAdapter adapter = new HeroAdapter(heroList);
-        listView.setAdapter(adapter);
+        UserAdapter adapter = new UserAdapter(userList);
+        listViewDados.setAdapter(adapter);
     }
 
     private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
@@ -184,13 +172,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressBar.setVisibility(GONE);
             try {
                 JSONObject object = new JSONObject(s);
                 if (!object.getBoolean("error")) {
@@ -217,41 +203,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class HeroAdapter extends ArrayAdapter<Hero> {
-        List<Hero> heroList;
+    class UserAdapter extends ArrayAdapter<User> {
+        List<User> userList;
 
-        public HeroAdapter(List<Hero> heroList) {
-            super(MainActivity.this, R.layout.layout_hero_list, heroList);
-            this.heroList = heroList;
+        public UserAdapter(List<User> userList) {
+            super(MainActivity.this, R.layout.layout_user_list, userList);
+            this.userList = userList;
         }
 
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View listViewItem = inflater.inflate(R.layout.layout_hero_list, null, true);
+            View listViewItem = inflater.inflate(R.layout.layout_user_list, null, true);
 
-            TextView textViewName = listViewItem.findViewById(R.id.textViewName);
+            TextView textViewName = listViewItem.findViewById(R.id.textViewNome);
 
-            TextView textViewUpdate = listViewItem.findViewById(R.id.textViewUpdate);
-            TextView textViewDelete = listViewItem.findViewById(R.id.textViewDelete);
+            TextView textViewDelete = listViewItem.findViewById(R.id.textViewApaga);
 
-            final Hero hero = heroList.get(position);
+            final User hero = userList.get(position);
 
             textViewName.setText(hero.getName());
-
-            textViewUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    isUpdating = true;
-                    editTextHeroId.setText(String.valueOf(hero.getId()));
-                    editTextName.setText(hero.getName());
-                    editTextRealname.setText(hero.getRealname());
-                    ratingBar.setRating(hero.getRating());
-                    spinnerTeam.setSelection(((ArrayAdapter<String>) spinnerTeam.getAdapter()).getPosition(hero.getTeamaffiliation()));
-                    buttonAddUpdate.setText("Alterar");
-                }
-            });
 
             textViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -268,12 +240,8 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
                                 }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-
+                            }).setIcon(android.R.drawable.ic_dialog_alert).show();
                 }
             });
 

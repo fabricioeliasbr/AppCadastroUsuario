@@ -13,9 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,34 +24,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.view.View.GONE;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
 
-    EditText editTextNome, editTextEmail, editTextUserId;
     TextView textViewCadastre, textViewNome, textViewEmail;
+    EditText editTextNome, editTextEmail, editTextUserId;
     Button buttonCadastra;
     ListView listViewDados;
 
     List<User> userList;
 
-    boolean isUpdating = false;
+    boolean isUpdating = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editTextUserId = (EditText) findViewById(R.id.editTextUserId);
-        editTextNome = (EditText) findViewById(R.id.editTextNome);
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        textViewNome = (TextView) findViewById(R.id.textViewNome);
-        textViewEmail = (TextView) findViewById(R.id.textViewEmail);
-        textViewCadastre = (TextView) findViewById(R.id.textViewCadastre);
-        buttonCadastra = (Button) findViewById(R.id.buttonCadastra);
+        editTextUserId = this.findViewById(R.id.editTextUserId);
+        editTextNome = this.findViewById(R.id.editTextNome);
+        editTextEmail = this.findViewById(R.id.editTextEmail);
+        textViewNome = this.findViewById(R.id.textViewNome);
+        textViewEmail = this.findViewById(R.id.textViewEmail);
+        textViewCadastre = this.findViewById(R.id.textViewCadastre);
+        buttonCadastra = this.findViewById(R.id.buttonCadastra);
 
         userList = new ArrayList<>();
 
@@ -63,23 +58,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (isUpdating) {
-                    updateHero();
+                    updateUser();
                 } else {
-                    createHero();
+                    createUser();
                 }
 
             }
         });
-
-        readHeroes();
+        readUsers();
     }
 
-    private void createHero() {
-        String name = editTextNome.getText().toString().trim();
+    private void createUser() {
+        String nome = editTextNome.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
+        editTextNome.requestFocus();
 
-
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(nome)) {
             editTextNome.setError("Por favor entre com o nome");
             editTextNome.requestFocus();
             return;
@@ -92,19 +86,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("name", name);
+        params.put("nome", nome);
         params.put("email", email);
 
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_CREATE_HERO, params, CODE_POST_REQUEST);
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_CREATE_USER, params, CODE_POST_REQUEST);
         request.execute();
     }
 
-    private void readHeroes() {
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_HEROES, null, CODE_GET_REQUEST);
+    private void readUsers() {
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_USERS, null, CODE_GET_REQUEST);
         request.execute();
     }
 
-    private void updateHero() {
+    private void updateUser() {
         String id = editTextUserId.getText().toString();
         String nome = editTextNome.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
@@ -126,30 +120,30 @@ public class MainActivity extends AppCompatActivity {
         params.put("nome", nome);
 
 
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_UPDATE_HERO, params, CODE_POST_REQUEST);
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_UPDATE_USER, params, CODE_POST_REQUEST);
         request.execute();
-
-        buttonCadastra.setText("Alterado");
+        Toast.makeText(getApplicationContext(), "Cadastrado!", Toast.LENGTH_SHORT).show();
+        buttonCadastra.setText("Cadastrar");
 
         editTextNome.setText("");
         editTextEmail.setText("");
         isUpdating = false;
     }
 
-    private void deleteHero(int id) {
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_DELETE_HERO + id, null, CODE_GET_REQUEST);
+    private void deleteUser(int id) {
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_DELETE_USER + id, null, CODE_GET_REQUEST);
         request.execute();
     }
 
-    private void refreshHeroList(JSONArray heroes) throws JSONException {
+    private void refreshUserList(JSONArray users) throws JSONException {
         userList.clear();
 
-        for (int i = 0; i < heroes.length(); i++) {
-            JSONObject obj = heroes.getJSONObject(i);
+        for (int i = 0; i < users.length(); i++) {
+            JSONObject obj = users.getJSONObject(i);
 
             userList.add(new User(
                     obj.getInt("id"),
-                    obj.getString("name"),
+                    obj.getString("nome"),
                     obj.getString("email")
             ));
         }
@@ -179,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             try {
                 JSONObject object = new JSONObject(s);
-                if (!object.getBoolean("error")) {
+                if (!object.getBoolean("erro")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                    refreshHeroList(object.getJSONArray("heroes"));
+                    refreshUserList(object.getJSONArray("users"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -221,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
 
             TextView textViewDelete = listViewItem.findViewById(R.id.textViewApaga);
 
-            final User hero = userList.get(position);
+            final User user = userList.get(position);
 
-            textViewName.setText(hero.getName());
+            textViewName.setText(user.getName());
 
             textViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -231,11 +225,11 @@ public class MainActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                    builder.setTitle("Apagar " + hero.getName())
+                    builder.setTitle("Apagar " + user.getName())
                             .setMessage("Tem certeza que deseja exluir?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    deleteHero(hero.getId());
+                                    deleteUser(user.getId());
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

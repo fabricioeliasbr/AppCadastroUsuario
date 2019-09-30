@@ -2,14 +2,14 @@ package br.com.etecia.appcadastrousuario;
 
 public class User {
     private int id;
-    private String name, email;
+    private String nome, email;
 
     public User() {
     }
 
     public User(int id, String name, String email) {
         this.id = id;
-        this.name = name;
+        this.nome = name;
         this.email = email;
     }
 
@@ -18,7 +18,7 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return nome;
     }
 
     public String getEmail() {

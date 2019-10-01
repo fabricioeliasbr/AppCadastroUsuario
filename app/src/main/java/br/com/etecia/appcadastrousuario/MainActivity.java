@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     List<User> userList;
 
-    boolean isUpdating = true;
+    boolean isUpdating = false;
+    boolean isCreating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (isUpdating) {
-                    updateUser();
-                } else {
+                if (isCreating) {
                     createUser();
+                } else {
+                    updateUser();
                 }
 
             }
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private void createUser() {
         String nome = editTextNome.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
-        editTextNome.requestFocus();
 
         if (TextUtils.isEmpty(nome)) {
             editTextNome.setError("Por favor entre com o nome");
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         editTextNome.setText("");
         editTextEmail.setText("");
-        isUpdating = false;
+        isUpdating = true;
     }
 
     private void deleteUser(int id) {
@@ -211,13 +211,13 @@ public class MainActivity extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             View listViewItem = inflater.inflate(R.layout.layout_user_list, null, true);
 
-            TextView textViewName = listViewItem.findViewById(R.id.textViewNome);
+            TextView textViewNome = listViewItem.findViewById(R.id.textViewNome);
 
             TextView textViewDelete = listViewItem.findViewById(R.id.textViewApaga);
 
             final User user = userList.get(position);
 
-            textViewName.setText(user.getName());
+            textViewNome.setText(user.getName());
 
             textViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

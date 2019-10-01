@@ -1,8 +1,8 @@
 package br.com.etecia.appcadastrousuario;
 
 public class Api {
-    //URL para acesso ao bando de dados WEB Service
-    private static final String ROOT_URL = "http://10.67.96.68/HeroApi/v1/Api.php?apicall=";
+    //URL para acesso ao banco de dados WEB Service
+    private static final String ROOT_URL = "http://10.67.96.174/UserApi/v1/Api.php?apicall=";
 
     //Variáveis estáticas e globais para acesso os métodos no WEB Service
 

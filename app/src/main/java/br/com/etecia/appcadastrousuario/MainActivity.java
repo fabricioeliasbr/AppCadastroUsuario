@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isUpdating = false;
     boolean isCreating = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
 
         if (TextUtils.isEmpty(nome)) {
-            editTextNome.setError("Por favor entre com o nome");
+            editTextNome.setError("Este campo não pode estar vazio!");
             editTextNome.requestFocus();
             return;
         }
 
         if (TextUtils.isEmpty(email)) {
-            editTextEmail.setError("Por favor entre com um e-mail válido");
+            editTextEmail.setError("Este campo não pode estar vazio!");
             editTextEmail.requestFocus();
             return;
         }
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("id", id);
         params.put("nome", nome);
-
+        params.put("email", email);
 
         PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_UPDATE_USER, params, CODE_POST_REQUEST);
         request.execute();
@@ -127,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
 
         editTextNome.setText("");
         editTextEmail.setText("");
-        isUpdating = true;
+        isUpdating = false;
+
     }
 
     private void deleteUser(int id) {
@@ -212,12 +214,13 @@ public class MainActivity extends AppCompatActivity {
             View listViewItem = inflater.inflate(R.layout.layout_user_list, null, true);
 
             TextView textViewNome = listViewItem.findViewById(R.id.textViewNome);
-
+            TextView textViewEmail = listViewItem.findViewById(R.id.textViewEmail);
             TextView textViewDelete = listViewItem.findViewById(R.id.textViewApaga);
 
             final User user = userList.get(position);
 
-            textViewNome.setText(user.getName());
+            textViewNome.setText(user.getNome());
+            textViewEmail.setText(user.getEmail());
 
             textViewDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -225,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-                    builder.setTitle("Apagar " + user.getName())
+                    builder.setTitle("Apagar " + user.getNome())
                             .setMessage("Tem certeza que deseja exluir?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
